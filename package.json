@@ -1,0 +1,29 @@
+{
+  "name": "blockcypher-ts",
+  "version": "1.0.0",
+  "description": "A REST API and Websocket client for the BlockCypher Web services",
+  "main": "index.js",
+  "directories": {
+    "example": "examples",
+    "test": "test"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/vkonst/blockcypher-ts.git"
+  },
+  "keywords": [
+    "blockchain",
+    "cryptocurrenceies",
+    "blockcypher",
+    "websocket"
+  ],
+  "author": "vadim.konstantinov@gmail.com",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/vkonst/blockcypher-ts/issues"
+  },
+  "homepage": "https://github.com/vkonst/blockcypher-ts#readme"
+}

@@ -1,7 +1,6 @@
-# Chain-services #
+# BlockCypher-Ts #
 
-A suit of micro-services for verification, creation, monitoring of crypto ccy addresses, transactions, etc..
-Based on AMQP messaging and Json-RPC 2.0 protocols. 
+A REST API and Websocket client for the BlockCypher Web services written in Typescript with minimal external dependencies.
 
 ### API
 Refer to doc/api.md (not yet ready)
@@ -12,5 +11,5 @@ Refer to doc/folders.md (not yet ready)
 ### Build
 $ _npm build_ (not yet ready)
 
-### Deploy
-$ _npm deploy_ (not yet ready)
+### Test
+$ _npm test_ (not yet ready)

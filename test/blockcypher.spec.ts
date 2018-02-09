@@ -8,14 +8,6 @@ import Blocksypher from "../src/blockcypher";
 describe('blockcypher', () => {
     it('should', (done) => {
         let blockSypher = new Blocksypher();
-        blockSypher.listWallets().then(res => {
-            console.log(res);
-
-            done();
-        }, err => {
-            console.log(err);
-
-            done();
-        });
+        blockSypher.emitter.on("connectFailed")
     })
 });

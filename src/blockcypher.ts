@@ -1,10 +1,10 @@
 import * as Debug from "debug";
 import request = require("request");
-import conf from "../../config/blockcypher.conf";
+import conf from "../config/blockcypher.conf";
 import {
   IAddressBreifData, IAddressData, IAddressFullData, IBlockData, IChainData,
   ICoinConf, IConf, ITxData, ITxInputData, ITxOutputData, IWalletData, IWalletList,
-} from "./blockcyper";
+} from "./types";
 import WebsocketClient from "./websocketClient";
 
 const debug = Debug("blockcypher:class");

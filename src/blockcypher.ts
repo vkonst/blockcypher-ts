@@ -31,7 +31,7 @@ class Blockcypher extends WebsocketClient {
       url,
     }, (error, response, body) => {
       if (error || response.statusCode !== 200) {
-        reject(error);
+        reject(body);
       } else {
         resolve(body);
       }
@@ -56,8 +56,8 @@ class Blockcypher extends WebsocketClient {
       strictSSL: true,
       url,
     }, (error, response, body) => {
-      if (error || response.statusCode !== 200) {
-        reject(error);
+      if (error || response.statusCode !== 201) {
+        reject(body);
       } else {
         resolve(body);
       }
@@ -144,7 +144,7 @@ class Blockcypher extends WebsocketClient {
    * @returns Promise{Object} Created wallet (as Promise resolving to IWallet)
    */
   public createWallet(wallet: string, addresses: string[] = []): Promise<IWalletData> {
-    const data = Object.assign({}, {name: wallet, addresses: []});
+    const data = Object.assign({}, {name: wallet, addresses: addresses || []});
     return Blockcypher.httpPost(this.getUrl("/wallets"), {}, data)
       .then(Blockcypher.wipeToken);
   }

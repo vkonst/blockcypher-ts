@@ -119,6 +119,13 @@ interface IAddressData extends IAddressBreifData {
   unconfirmed_txrefs: ITxRefData[];
 }
 
+interface INewAddress {
+  private: string;
+  public: string;
+  address: string;
+  wif: string;
+}
+
 interface IAddressFullData extends IAddressBreifData {
   // FIXME: to be corrected and detailized
   inputs: any[];
@@ -139,4 +146,5 @@ export {
   ITxRefData,
   IWalletData,
   IWalletList,
+  INewAddress
 };

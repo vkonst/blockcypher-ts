@@ -38,6 +38,7 @@ export default class WebsocketClient {
                     maxReconnectionDelay?: number,
                     minReconnectionDelay?: number,
                     reconnectionDelayGrowFactor?: number,
+                    maxRetries?: number
                 }) {
         const self = this;
         self.serverUrl = serverUrl;
@@ -51,9 +52,9 @@ export default class WebsocketClient {
             self.connection
                 .on("message", (msg: IMessage) => self.handleMsg(msg))
                 .on("close", (code: number, desc: string): void => {
-                    console.log('handleClose', {shouldRetry: self.shouldRetry});
+                    debug('handleClose', {shouldRetry: self.shouldRetry});
                     self.retriesCount++;
-                    console.log('retries count:', self.retriesCount);
+                    debug('retries count:', self.retriesCount);
                     if (self.retriesCount > self.maxRetries) {
                         self.emitter.emit('EHOSTDOWN', 'Too many failed connection attempts');
                         return;
@@ -67,9 +68,17 @@ export default class WebsocketClient {
                             ? self.maxReconnectionDelay
                             : newDelay;
                     }
-                    console.log('handleClose - reconnectDelay:', self.reconnectDelay);
+                    debug('handleClose - reconnectDelay:', self.reconnectDelay);
                     if (self.shouldRetry) {
-                        setTimeout(self.connect, self.reconnectDelay);
+                        setTimeout(() => {
+                            this.wsClient.emit('reconnection', {
+                                retriesCount: this.retriesCount,
+                                shouldRetry: this.shouldRetry,
+                                reconnectDelay: this.reconnectDelay,
+                                maxRetries: this.maxRetries
+                            });
+                            self.connect();
+                        }, self.reconnectDelay);
                     }
 
                 })

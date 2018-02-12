@@ -1,37 +1,38 @@
 import 'mocha';
 
-import Blocksypher from "../src/blockcypher";
-import {IAddressData, IAddressFullData, IBlockData, IChainData, ITxData, IWalletData, IWalletList} from "../src/types";
+import BlockCypher from "../src/blockcypher";
+import {
+    IAddressData, IAddressFullData, IBlockData, IChainData, INewAddress, ITxData, IWalletData,
+    IWalletList
+} from "../src/types";
 
 const expect = require('chai').expect;
-const chai = require('chai');
-
-chai.use(require('chai-interface'));
 
 describe('blockcypher', () => {
 
-    let blockSypher: Blocksypher;
+    let blockCypher: BlockCypher;
     let testBlock: IBlockData;
     let testChain: IChainData;
     let testTx: ITxData;
+    let testNewAddress: INewAddress;
     let testAddressString: string;
     let testAddressData: IAddressData;
     let testAddressFullData: IAddressFullData;
-    let testWalletName = (Math.random() * 10e10).toFixed(0).toString();
+    const testWalletName = 'a' + (Math.random() * 10e10).toFixed(0).toString();
     let testWallet: IWalletData;
     let testWalletList: IWalletList;
 
     before(done => {
-        blockSypher = new Blocksypher();
+        blockCypher = new BlockCypher();
 
-        blockSypher.emitter.on('connect', () => {
+        blockCypher.emitter.on('connect', () => {
             done();
         });
     });
 
     describe('getChain method', () => {
         it('should return current chain', done => {
-            blockSypher.getChain().then(chain => {
+            blockCypher.getChain().then(chain => {
                 testChain = chain;
                 expect(testChain).to.be.a('object');
                 expect(testChain.name).to.equal('BCY.test');
@@ -48,7 +49,7 @@ describe('blockcypher', () => {
         let testBlockHash: string;
 
         it('should found and return block by height', done => {
-            blockSypher.getBlock('1').then(block => {
+            blockCypher.getBlock('1').then(block => {
                 testBlock = block;
                 testBlockHash = block.hash;
                 expect(testBlock).to.be.a('object');
@@ -64,7 +65,7 @@ describe('blockcypher', () => {
         });
 
         it('should found and return block by hash', done => {
-            blockSypher.getBlock(testBlockHash).then(block => {
+            blockCypher.getBlock(testBlockHash).then(block => {
                     expect(block).to.deep.equal(testBlock);
 
                     done();
@@ -76,7 +77,7 @@ describe('blockcypher', () => {
 
     describe('getTx method', () => {
         it('should found and return transaction by hash', (done) => {
-            blockSypher.getTX(testBlock.txids[0]).then(tx => {
+            blockCypher.getTX(testBlock.txids[0]).then(tx => {
                 testTx = tx;
                 testAddressString = tx.addresses[0];
                 expect(testTx).to.be.a('object');
@@ -91,9 +92,22 @@ describe('blockcypher', () => {
         });
     });
 
+    describe('createAddr method', () => {
+        it('should create and return new address', done => {
+            blockCypher.createAddr().then(addr => {
+                testNewAddress = addr;
+                expect(testNewAddress).to.be.a('object');
+
+                done();
+            }).catch(err => {
+                done(err);
+            })
+        })
+    });
+
     describe('getAddr method', () => {
         it('should found and return address by hash', done => {
-            blockSypher.getAddr(testAddressString).then(addr => {
+            blockCypher.getAddr(testAddressString).then(addr => {
                 testAddressData = addr;
                 expect(testAddressData).to.be.a('object');
                 expect(testAddressData.address).to.equal(testAddressString);
@@ -108,7 +122,7 @@ describe('blockcypher', () => {
 
     describe('getAddrFull method', () => {
         it('should found and return full address by hash', done => {
-            blockSypher.getAddrFull(testAddressString).then(addr => {
+            blockCypher.getAddrFull(testAddressString).then(addr => {
                 testAddressFullData = addr;
                 expect(testAddressFullData).to.be.a('object');
                 expect(testAddressFullData.address).to.equal(testAddressString);
@@ -122,7 +136,7 @@ describe('blockcypher', () => {
 
     describe('getAddrBalance method', () => {
         it('should found address by hash and return its balance', done => {
-            blockSypher.getAddrBalance(testAddressString).then(addrBallance => {
+            blockCypher.getAddrBalance(testAddressString).then(addrBallance => {
                 expect(addrBallance).to.be.a('object');
                 expect(addrBallance.address).to.equal(testAddressString);
                 expect(addrBallance.balance).to.equal(testAddressData.balance);
@@ -136,7 +150,7 @@ describe('blockcypher', () => {
 
     describe('createWallet method', () => {
         it('should create wallet and return its token', done => {
-            blockSypher.createWallet(testWalletName).then(wallet => {
+            blockCypher.createWallet(testWalletName).then(wallet => {
                 testWallet = wallet;
                 expect(wallet).to.be.a('object');
                 expect(wallet.name).to.equal(testWalletName);
@@ -151,7 +165,7 @@ describe('blockcypher', () => {
 
     describe('getWallet method', () => {
         it('should return wallet by wallet name', done => {
-            blockSypher.getWallet(testWalletName).then(wallet => {
+            blockCypher.getWallet(testWalletName).then(wallet => {
                 if(wallet) {
                     expect(wallet).to.be.a('object');
                     expect(wallet).to.deep.equal(testWallet);
@@ -168,7 +182,7 @@ describe('blockcypher', () => {
 
     describe('listWallets method', () => {
         it('should return list of wallets', done => {
-            blockSypher.listWallets().then(listWallets => {
+            blockCypher.listWallets().then(listWallets => {
                 if(listWallets) {
                     testWalletList = listWallets;
                     expect(testWalletList).to.be.a('object');
@@ -192,25 +206,37 @@ describe('blockcypher', () => {
         })
     });
 
-    describe.skip('addAddrsToWallet method', () => {
+    describe('addAddrsToWallet method', () => {
         it('should add address to wallet and return updated wallet', done => {
-            blockSypher.addAddrsToWallet(testWalletName, [testAddressString])
-                .then(updatedAddress => {
-                    console.log(updatedAddress);
+            blockCypher.addAddrsToWallet(testWalletName, [testNewAddress.address])
+                .then(updatedWallet => {
+                    expect(updatedWallet).to.be.a('object');
+                    expect(updatedWallet.name).to.equal(testWalletName);
+                    expect(updatedWallet.token).to.equal('');
 
-                    done();
+                    updatedWallet.addresses.forEach(each_address => {
+                        if (each_address === testNewAddress.address) {
+                            done();
+                        }
+                    });
                 }).catch(err => {
                     done(err);
                 })
         })
     });
 
-    describe.skip('getAddrsInWallet method', () => {
+    describe('getAddrsInWallet method', () => {
         it('should return wallet which include testing address', done => {
-            blockSypher.getAddrsInWallet(testWalletName).then(wallet => {
-                console.log(wallet);
+            blockCypher.getAddrsInWallet(testWalletName).then(wallet => {
+                expect(wallet).to.be.a('object');
+                expect(wallet.name).to.equal(undefined);
+                expect(wallet.token).to.equal('');
 
-                done();
+                wallet.addresses.forEach(each_address => {
+                    if (each_address === testNewAddress.address) {
+                        done();
+                    }
+                });
             }).catch(err => {
                 done(err);
             })

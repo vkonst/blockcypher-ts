@@ -2,8 +2,8 @@ import * as Debug from "debug";
 import request = require("request");
 import conf from "../config/blockcypher.conf";
 import {
-  IAddressBreifData, IAddressData, IAddressFullData, IBlockData, IChainData,
-  ICoinConf, IConf, ITxData, ITxInputData, ITxOutputData, IWalletData, IWalletList,
+    IAddressBreifData, IAddressData, IAddressFullData, IBlockData, IChainData,
+    ICoinConf, IConf, INewAddress, ITxData, ITxInputData, ITxOutputData, IWalletData, IWalletList,
 } from "./types";
 import WebsocketClient from "./websocketClient";
 
@@ -56,7 +56,8 @@ class Blockcypher extends WebsocketClient {
       strictSSL: true,
       url,
     }, (error, response, body) => {
-      if (error || response.statusCode !== 201) {
+      if ((error || response.statusCode !== 200) && response.statusCode !== 201) {
+          console.log(response.statusCode);
         reject(body);
       } else {
         resolve(body);
@@ -157,8 +158,8 @@ class Blockcypher extends WebsocketClient {
    * @returns Promise{Object} Updated wallet (as Promise resolving to IWallet)
    */
   public addAddrsToWallet(wallet: string, addresses: string[]): Promise<IWalletData> {
-    return Blockcypher.httpPost(this.getUrl(`/wallets/${wallet}/addresses`), {}, {addresses})
-      .then(Blockcypher.wipeToken);
+    return Blockcypher.httpPost(this.getUrl(`/wallets/${wallet}/addresses`), {},
+        {addresses: addresses}).then(Blockcypher.wipeToken);
   }
 
   /**
@@ -203,6 +204,10 @@ class Blockcypher extends WebsocketClient {
    */
   public getAddr(addr: string, params?: {}): Promise<IAddressData> {
     return Blockcypher.httpGet(this.getUrl(`/addrs/${addr}`), params);
+  }
+
+  public createAddr(): Promise<INewAddress> {
+      return Blockcypher.httpPost(this.getUrl('/addrs'));
   }
 
   /**

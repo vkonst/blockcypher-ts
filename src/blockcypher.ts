@@ -206,6 +206,12 @@ class Blockcypher extends WebsocketClient {
     return Blockcypher.httpGet(this.getUrl(`/addrs/${addr}`), params);
   }
 
+
+  /**
+   * <b>Create new Address</b>
+   * Create new address and return new address data
+   * @return {Promise<INewAddress>} new address data(as Promise resolving to INewAddress)
+   */
   public createAddr(): Promise<INewAddress> {
       return Blockcypher.httpPost(this.getUrl('/addrs'));
   }

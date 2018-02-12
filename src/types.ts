@@ -1,14 +1,15 @@
 interface ICoinConf {
-  chain: string;
-  coin: string;
+    name: string;
+    chain: string;
+    coin: string;
 }
 
 interface IConf {
-  apiUrl: string;
-  coins: ICoinConf[];
-  network: string;
-  token: string;
-  wsUri: string;
+    apiUrl: string;
+    chain: string;
+    coins: ICoinConf[];
+    token: string;
+    wsUri: string;
 }
 
 interface IChainData {

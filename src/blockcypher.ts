@@ -70,35 +70,35 @@ class Blockcypher extends WebsocketClient {
     return { name, addresses, token: "" };
   }
 
-  private coin: string;
-  private chain: string;
-  private apiUri: string;
-  private wsUri: string;
+    private name: string;
+    private coin: string;
+    private chain: string;
+    private apiUri: string;
+    private wsUri: string;
 
   /**
    * Creates a new Blockcyper instance.
    * @param {string} chainName Name (ticket) of the coin (as defined in blockcypher.conf)
    */
-  constructor(chainName?: string) {
-    const network = chainName ? chainName : (conf as IConf).network;
-    const coinConf: ICoinConf | undefined = (conf as IConf).coins
-      .find((el) => el.chain === network );
+  constructor(chainName: string = 'BTC.test') {
+      const coinConf: ICoinConf | undefined = (conf as IConf).coins
+          .find((el) => el.name === chainName );
 
-    if (coinConf) {
-      const {coin, chain} = coinConf as ICoinConf;
-      const apiUri = `${Blockcypher.API_ROOT}${coin}/${chain}`;
-      const wsUri = `${Blockcypher.WS_ROOT}${coin}/${chain}`;
+      if (coinConf) {
+          const {coin, chain} = coinConf as ICoinConf;
+          const apiUri = `${Blockcypher.API_ROOT}${coin}/${chain}`;
+          const wsUri = `${Blockcypher.WS_ROOT}${coin}/${chain}`;
 
-      super(wsUri);
+          super(wsUri);
 
-      this.coin = coin;
-      this.chain = chain;
-      this.apiUri = apiUri;
-      this.wsUri = wsUri;
-
-    } else {
-      throw new Error("uknown/invalid chain");
-    }
+          this.name = chainName;
+          this.coin = coin;
+          this.chain = chain;
+          this.apiUri = apiUri;
+          this.wsUri = wsUri;
+      } else {
+          throw new Error("uknown/invalid chain");
+      }
   }
 
   /**

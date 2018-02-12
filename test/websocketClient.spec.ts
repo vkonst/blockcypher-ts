@@ -6,7 +6,7 @@ import http = require('http');
 import WebsocketClient, {Subscription} from "../src/websocketClient";
 
 
-describe.skip('blockcypher web socket client', () => {
+describe('blockcypher web socket client', () => {
 
     let wsClient: WebsocketClient;
     let wsServer: WsServer;

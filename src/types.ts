@@ -124,7 +124,7 @@ interface INewAddress {
   private: string;
   public: string;
   address: string;
-  wif: string;
+  wif?: string;
 }
 
 interface IAddressFullData extends IAddressBreifData {

@@ -37,7 +37,7 @@ describe('blockcypher web socket client', () => {
     });
 
     describe('web socket client reconnection', () => {
-        it('should emit "reconnection" event when server disconnects', done => {
+        it('should emit "reconnection" event when server disconnects and reconnect client to web socket server', done => {
             wsClient.emitter.on('reconnection', (reconParams) => {
                 expect(reconParams).to.be.a('object');
                 expect(reconParams.retriesCount).to.equal(1);

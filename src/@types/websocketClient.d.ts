@@ -26,6 +26,19 @@ export default class WebsocketClient {
     private reconnectionDelayGrowFactor: number;
     private maxRetries: number;
 
+    constructor (
+        serverUrl: string,
+        subscriptions: Subscription[],
+        reconnectOptions?: {
+            reconnectDelay?: number,
+            shouldRetry?: boolean,
+            maxReconnectionDelay?: number,
+            minReconnectionDelay?: number,
+            reconnectionDelayGrowFactor?: number,
+            maxRetries?: number
+        }
+    )
+
     public emitter(): events.EventEmitter;
 
     protected setReconnectOpts(reconnectOpts?: {

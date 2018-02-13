@@ -44,7 +44,14 @@ export default class WebsocketClient {
         self.serverUrl = serverUrl;
         self.subscriptions = subscriptions;
         self.wsClient = new WsClient();
-        self.setReconnectOpts(reconnectOptions);
+        if (reconnectOptions) {
+            self.reconnectDelay = reconnectOptions.reconnectDelay || 0;
+            self.shouldRetry = reconnectOptions.shouldRetry || true;
+            self.maxReconnectionDelay = reconnectOptions.maxReconnectionDelay || 10000;
+            self.minReconnectionDelay = reconnectOptions.minReconnectionDelay || 1500;
+            self.reconnectionDelayGrowFactor = reconnectOptions.reconnectionDelayGrowFactor || 1.3;
+            self.maxRetries = reconnectOptions.maxRetries || Infinity
+        }
 
         self.wsClient.on("connectFailed", (err) => debug("connectFailed", err));
         self.wsClient.on("connect", (conn: WebSocket.connection) => {
@@ -95,26 +102,6 @@ export default class WebsocketClient {
 
     public get emitter(): events.EventEmitter {
         return this.wsClient as events.EventEmitter;
-    }
-
-    protected setReconnectOpts(reconnectOpts?: {
-        reconnectDelay?: number,
-        shouldRetry?: boolean,
-        maxReconnectionDelay?: number,
-        minReconnectionDelay?: number,
-        reconnectionDelayGrowFactor?: number,
-        connectionTimeout?: number
-    }) {
-
-        const self = this;
-
-        if (reconnectOpts) {
-            Object.keys(reconnectOpts).forEach(each_key => {
-                if (reconnectOpts[each_key]) { // FIXME reconnectOpts has type any
-                    self[each_key] = reconnectOpts[each_key];
-                }
-            })
-        }
     }
 
 

@@ -1,4 +1,4 @@
-import WebsocketClient from './websocketClient';
+import WebsocketClient from '../websocketClient';
 import {
     IAddressBreifData,
     IAddressData,
@@ -11,7 +11,7 @@ import {
     IWalletList,
     ITxInputData,
     ITxOutputData,
-} from "./types";
+} from "../types";
 
 export default class Blockcypher extends WebsocketClient {
 

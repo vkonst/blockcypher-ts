@@ -44,11 +44,13 @@ describe('blockcypher web socket client', () => {
                 expect(reconParams.maxRetries).to.equal(1);
                 expect(reconParams.shouldRetry).to.equal(true);
 
-                done();
+                wsClient.emitter.once('connect', () => {
+                    done();
+                });
             });
 
             wsServer.closeAllConnections();
-        })
+        });
     });
 
     describe('web socket client reconnection limit', () => {
@@ -61,5 +63,7 @@ describe('blockcypher web socket client', () => {
 
             wsServer.closeAllConnections();
         })
-    })
+    });
+
+
 });

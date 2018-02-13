@@ -48,7 +48,7 @@ describe('blockcypher (Ethereum)', () => {
 
         let testBlockHash: string;
 
-        it('should found and return block by height', done => {
+        it('should find and return block by height', done => {
             blockCypher.getBlock('0').then(block => {
                 testBlock = block;
                 testBlockHash = block.hash;
@@ -63,7 +63,7 @@ describe('blockcypher (Ethereum)', () => {
             })
         });
 
-        it('should found and return block by hash', done => {
+        it('should find and return block by hash', done => {
             blockCypher.getBlock(testBlockHash).then(block => {
                 expect(block).to.deep.equal(testBlock);
 
@@ -75,7 +75,7 @@ describe('blockcypher (Ethereum)', () => {
     });
 
     describe('getTx method', () => {
-        it('should found and return transaction by hash', (done) => {
+        it('should find and return transaction by hash', (done) => {
             blockCypher.getTX(testBlock.txids[0]).then(tx => {
                 testTx = tx;
                 testAddressString = tx.addresses[0];
@@ -105,7 +105,7 @@ describe('blockcypher (Ethereum)', () => {
     });
 
     describe('getAddr method', () => {
-        it('should found and return address by hash', done => {
+        it('should find and return address by hash', done => {
             blockCypher.getAddr(testAddressString).then(addr => {
                 testAddressData = addr;
                 expect(testAddressData).to.be.a('object');
@@ -120,7 +120,7 @@ describe('blockcypher (Ethereum)', () => {
     });
 
     describe('getAddrFull method', () => {
-        it('should found and return full address by hash', done => {
+        it('should find and return full address by hash', done => {
             blockCypher.getAddrFull(testAddressString).then(addr => {
                 testAddressFullData = addr;
                 expect(testAddressFullData).to.be.a('object');
@@ -134,7 +134,7 @@ describe('blockcypher (Ethereum)', () => {
     });
 
     describe('getAddrBalance method', () => {
-        it('should found address by hash and return its balance', done => {
+        it('should find address by hash and return its balance', done => {
             blockCypher.getAddrBalance(testAddressString).then(addrBallance => {
                 expect(addrBallance).to.be.a('object');
                 expect(addrBallance.address).to.equal(testAddressString);

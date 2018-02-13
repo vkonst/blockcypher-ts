@@ -37,7 +37,7 @@ describe('blockcypher web socket client', () => {
     });
 
     describe('web socket client reconnection', () => {
-        it('should emit "reconnection" event when server was disconnected', done => {
+        it('should emit "reconnection" event when server disconnects', done => {
             wsClient.emitter.on('reconnection', (reconParams) => {
                 expect(reconParams).to.be.a('object');
                 expect(reconParams.retriesCount).to.equal(1);
@@ -52,7 +52,7 @@ describe('blockcypher web socket client', () => {
     });
 
     describe('web socket client reconnection limit', () => {
-        it('should emit "EHOSTDOWN" event when limit of reconnections was expired', done => {
+        it('should emit "EHOSTDOWN" event when limit of reconnections reached', done => {
             wsClient.emitter.on('EHOSTDOWN', (err) => {
                 expect(err).to.equal('Too many failed connection attempts');
 

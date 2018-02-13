@@ -2,8 +2,8 @@ import * as Debug from "debug";
 import request = require("request");
 import conf from "../config/blockcypher.conf";
 import {
-    IAddressBreifData, IAddressData, IAddressFullData, IBlockData, IChainData,
-    ICoinConf, IConf, INewAddress, ITxData, ITxInputData, ITxOutputData, IWalletData, IWalletList,
+  IAddressBreifData, IAddressData, IAddressFullData, IBlockData, IChainData,
+  ICoinConf, IConf, INewAddress, ITxData, ITxInputData, ITxOutputData, IWalletData, IWalletList,
 } from "./types";
 import WebsocketClient from "./websocketClient";
 
@@ -31,7 +31,7 @@ class Blockcypher extends WebsocketClient {
       url,
     }, (error, response, body) => {
       if (error || response.statusCode !== 200) {
-        reject(body);
+        reject(body ? body : error);
       } else {
         resolve(body);
       }
@@ -56,9 +56,10 @@ class Blockcypher extends WebsocketClient {
       strictSSL: true,
       url,
     }, (error, response, body) => {
-      if ((error || response.statusCode !== 200) && response.statusCode !== 201) {
-          console.log(response.statusCode);
-        reject(body);
+      const statusCode = `${response.statusCode}`;
+      if (error || !statusCode.match(/^200|201$/)) {
+        debug('statusCode: ' + statusCode);
+        reject(body ? body : error);
       } else {
         resolve(body);
       }
@@ -70,35 +71,35 @@ class Blockcypher extends WebsocketClient {
     return { name, addresses, token: "" };
   }
 
-    private name: string;
-    private coin: string;
-    private chain: string;
-    private apiUri: string;
-    private wsUri: string;
+  private name: string;
+  private coin: string;
+  private chain: string;
+  private apiUri: string;
+  private wsUri: string;
 
   /**
    * Creates a new Blockcyper instance.
    * @param {string} chainName Name (ticket) of the coin (as defined in blockcypher.conf)
    */
   constructor(chainName: string = 'BTC.test') {
-      const coinConf: ICoinConf | undefined = (conf as IConf).coins
-          .find((el) => el.name === chainName );
+    const coinConf: ICoinConf | undefined = (conf as IConf).coins
+      .find((el) => el.name === chainName );
 
-      if (coinConf) {
-          const {coin, chain} = coinConf as ICoinConf;
-          const apiUri = `${Blockcypher.API_ROOT}${coin}/${chain}`;
-          const wsUri = `${Blockcypher.WS_ROOT}${coin}/${chain}`;
+    if (coinConf) {
+      const {coin, chain} = coinConf as ICoinConf;
+      const apiUri = `${Blockcypher.API_ROOT}${coin}/${chain}`;
+      const wsUri = `${Blockcypher.WS_ROOT}${coin}/${chain}`;
 
-          super(wsUri);
+      super(wsUri);
 
-          this.name = chainName;
-          this.coin = coin;
-          this.chain = chain;
-          this.apiUri = apiUri;
-          this.wsUri = wsUri;
-      } else {
-          throw new Error("uknown/invalid chain");
-      }
+      this.name = chainName;
+      this.coin = coin;
+      this.chain = chain;
+      this.apiUri = apiUri;
+      this.wsUri = wsUri;
+    } else {
+      throw new Error("uknown/invalid chain");
+    }
   }
 
   /**
@@ -159,7 +160,7 @@ class Blockcypher extends WebsocketClient {
    */
   public addAddrsToWallet(wallet: string, addresses: string[]): Promise<IWalletData> {
     return Blockcypher.httpPost(this.getUrl(`/wallets/${wallet}/addresses`), {},
-        {addresses: addresses}).then(Blockcypher.wipeToken);
+      {addresses: addresses}).then(Blockcypher.wipeToken);
   }
 
   /**
@@ -213,7 +214,7 @@ class Blockcypher extends WebsocketClient {
    * @return {Promise<INewAddress>} new address data(as Promise resolving to INewAddress)
    */
   public createAddr(): Promise<INewAddress> {
-      return Blockcypher.httpPost(this.getUrl('/addrs'));
+    return Blockcypher.httpPost(this.getUrl('/addrs'));
   }
 
   /**

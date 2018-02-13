@@ -10,18 +10,13 @@
     "lib": ["es2015"],
     "sourceMap": true,
     "outDir": "./dist",
-    "typeRoots" : ["./node_modules/@types", "./src/@types", ".src/@types/coworkers/types"],
-    "types": ["node", "bluebird", "amqplib"]
+    "typeRoots" : ["./node_modules/@types", "./src/@types"],
+    "types": ["node"]
   },
   "include": [
-    "./src/*.ts",
-    "./src/**/*.ts"
+    "./src/"
   ],
   "exclude": [
-    "node_modules",
-    "src/config/unused/",
-    "src/lib/json-rpc/unused",
-    "src/services/unused/",
-    "src/**/unused"
+    "./node_modules/"
   ]
 }

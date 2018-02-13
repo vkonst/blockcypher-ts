@@ -8,7 +8,7 @@ import {
 
 const expect = require('chai').expect;
 
-describe('blockcypher', () => {
+describe('blockcypher (Ethereum)', () => {
 
     let blockCypher: BlockCypher;
     let testBlock: IBlockData;

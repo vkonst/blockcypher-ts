@@ -118,7 +118,7 @@ export default class WebsocketClient {
     }
 
 
-    protected connect() {
+    protected connect(): void {
         this.wsClient.connect(this.serverUrl);
     }
 
@@ -132,7 +132,7 @@ export default class WebsocketClient {
         this.connection.close();
     }
 
-    protected handleMsg(msg: IMessage) {
+    protected handleMsg(msg: IMessage): void {
         const emitter = this.wsClient;
         let invalidMsg = false;
         debug(`> new msg: ${JSON.stringify(msg)}`);
@@ -168,7 +168,7 @@ export default class WebsocketClient {
         }
     }
 
-    protected ping() {
+    protected ping(): void {
         if (!this.connection) {
             return;
         }
@@ -179,7 +179,7 @@ export default class WebsocketClient {
         this.connection.send("{\"event\":\"ping\"}");
     }
 
-    protected processPong() {
+    protected processPong(): void {
         const self = this;
         const pingIntervalInMs = 20000;
         setTimeout(() => {

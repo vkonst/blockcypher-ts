@@ -11,7 +11,7 @@ import {
     IWalletList,
     ITxInputData,
     ITxOutputData,
-} from "../types";
+} from "./blockcypher.types";
 
 export default class Blockcypher extends WebsocketClient {
 

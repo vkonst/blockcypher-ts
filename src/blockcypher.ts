@@ -3,8 +3,9 @@ import request = require("request");
 import conf from "../config/blockcypher.conf";
 import {
   IAddressBreifData, IAddressData, IAddressFullData, IBlockData, IChainData,
-  ICoinConf, IConf, INewAddress, ITxData, ITxInputData, ITxOutputData, IWalletData, IWalletList,
-} from "./types";
+  INewAddress, ITxData, ITxInputData, ITxOutputData, IWalletData, IWalletList,
+} from "./@types/blockcypher.types";
+import { ICoinConf, IConf} from "../config/conf.types";
 import WebsocketClient from "./websocketClient";
 
 const debug = Debug("blockcypher:class");
@@ -80,8 +81,19 @@ class Blockcypher extends WebsocketClient {
   /**
    * Creates a new Blockcyper instance.
    * @param {string} chainName Name (ticket) of the coin (as defined in blockcypher.conf)
+   * @param {object} reconOpts WebSocket reconnection options
    */
-  constructor(chainName: string = 'BTC.test') {
+  constructor(
+      chainName: string = 'BTC.test',
+      reconOpts? : {
+        reconnectDelay?: number,
+        shouldRetry?: boolean,
+        maxReconnectionDelay?: number,
+        minReconnectionDelay?: number,
+        reconnectionDelayGrowFactor?: number,
+        maxRetries?: number
+      }
+    ) {
     const coinConf: ICoinConf | undefined = (conf as IConf).coins
       .find((el) => el.name === chainName );
 
@@ -91,6 +103,8 @@ class Blockcypher extends WebsocketClient {
       const wsUri = `${Blockcypher.WS_ROOT}${coin}/${chain}`;
 
       super(wsUri);
+
+      this.setReconnectOptions(reconOpts || {});
 
       this.name = chainName;
       this.coin = coin;
@@ -188,7 +202,7 @@ class Blockcypher extends WebsocketClient {
   /**
    * <b>Get Address Balance</b>
    * Get info on address and its "balance".
-   * @param {(string|number)} addr Address
+   * @param {string} addr Address
    * @param {Object} [params] Optional URL parameter ({ omitWalletAddresses:	bool }).
    * @returns Promise{Object} Block data (as Promise resolving to IBlockData)
    */
@@ -199,7 +213,7 @@ class Blockcypher extends WebsocketClient {
   /**
    * <b>Get Address Basic info</b>
    * Get info about an address, including concise transaction references.
-   * @param {(string|number)} addr Address
+   * @param {string} addr Address
    * @param {Object} [params] Optional URL parameters.
    * @returns Promise{Object} Block data (as Promise resolving to IBlockData)
    */

@@ -1,17 +1,3 @@
-interface ICoinConf {
-    name: string;
-    chain: string;
-    coin: string;
-}
-
-interface IConf {
-    apiUrl: string;
-    chain: string;
-    coins: ICoinConf[];
-    token: string;
-    wsUri: string;
-}
-
 interface IChainData {
   name: string;           // ex: "BTC.main"
   height: number;
@@ -128,7 +114,6 @@ interface INewAddress {
 }
 
 interface IAddressFullData extends IAddressBreifData {
-  // FIXME: to be corrected and detailized
   inputs: any[];
   outputs: any[];
 }
@@ -138,8 +123,6 @@ export {
   IAddressData,
   IAddressFullData,
   IBlockData,
-  ICoinConf,
-  IConf,
   IChainData,
   ITxData,
   ITxInputData,

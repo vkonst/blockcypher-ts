@@ -4,7 +4,7 @@ import BlockCypher from "../src/blockcypher";
 import {
     IAddressData, IAddressFullData, IBlockData, IChainData, INewAddress, ITxData, IWalletData,
     IWalletList
-} from "../src/types";
+} from "../src/@types/blockcypher.types";
 
 const expect = require('chai').expect;
 
@@ -147,97 +147,53 @@ describe('blockcypher (Ethereum)', () => {
         })
     });
 
-    describe.skip('createWallet method', () => {
-        it('should create wallet and return its token', done => {
+    describe('createWallet method', () => {
+        it('not realised for "Ethereum"', done => {
             blockCypher.createWallet(testWalletName).then(wallet => {
-                testWallet = wallet;
-                expect(wallet).to.be.a('object');
-                expect(wallet.name).to.equal(testWalletName);
-                expect(wallet.token).to.equal('');
-
+                done(wallet);
+            }).catch(() => {
                 done();
-            }).catch(err => {
-                done(err);
             })
         })
     });
 
-    describe.skip('getWallet method', () => {
-        it('should return wallet by wallet name', done => {
+    describe('getWallet method', () => {
+        it('not realised for "Ethereum"', done => {
             blockCypher.getWallet(testWalletName).then(wallet => {
-                if(wallet) {
-                    expect(wallet).to.be.a('object');
-                    expect(wallet).to.deep.equal(testWallet);
-
-                    done();
-                } else {
-                    done(new Error('"getWallet" method not found created wallet!'));
-                }
-            }).catch(err => {
-                done(err);
+                done(wallet);
+            }).catch(() => {
+                done();
             })
         })
     });
 
-    describe.skip('listWallets method', () => {
-        it('should return list of wallets', done => {
+    describe('listWallets method', () => {
+        it('not realised for "Ethereum"', done => {
             blockCypher.listWallets().then(listWallets => {
-                if(listWallets) {
-                    testWalletList = listWallets;
-                    expect(testWalletList).to.be.a('object');
-
-                    listWallets.wallet_names.forEach((each_name, index) => {
-                        if(each_name === testWalletName) {
-                            done();
-                        } else if(index === listWallets.wallet_names.length) {
-                            done(new Error('"listWallets" method return list of ' +
-                                'wallets which not include created wallet: ' + testWalletName +
-                                '\n list of wallets: ' + listWallets.wallet_names
-                            ));
-                        }
-                    })
-                } else {
-                    done(new Error('listWallets is ' + listWallets));
-                }
-            }).catch(err => {
-                done(err);
+                done(listWallets);
+            }).catch(() => {
+                done();
             })
         })
     });
 
-    describe.skip('addAddrsToWallet method', () => {
-        it('should add address to wallet and return updated wallet', done => {
+    describe('addAddrsToWallet method', () => {
+        it('not realised for "Ethereum"', done => {
             blockCypher.addAddrsToWallet(testWalletName, [testNewAddress.address])
                 .then(updatedWallet => {
-                    expect(updatedWallet).to.be.a('object');
-                    expect(updatedWallet.name).to.equal(testWalletName);
-                    expect(updatedWallet.token).to.equal('');
-
-                    updatedWallet.addresses.forEach(each_address => {
-                        if (each_address === testNewAddress.address) {
-                            done();
-                        }
-                    });
-                }).catch(err => {
-                done(err);
+                    done(updatedWallet);
+                }).catch(() => {
+                done();
             })
         })
     });
 
-    describe.skip('getAddrsInWallet method', () => {
-        it('should return wallet which include testing address', done => {
+    describe('getAddrsInWallet method', () => {
+        it('not realised for "Ethereum"', done => {
             blockCypher.getAddrsInWallet(testWalletName).then(wallet => {
-                expect(wallet).to.be.a('object');
-                expect(wallet.name).to.equal(undefined);
-                expect(wallet.token).to.equal('');
-
-                wallet.addresses.forEach(each_address => {
-                    if (each_address === testNewAddress.address) {
-                        done();
-                    }
-                });
-            }).catch(err => {
-                done(err);
+                done(wallet);
+            }).catch(() => {
+                done();
             })
         })
     })

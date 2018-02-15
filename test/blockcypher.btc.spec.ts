@@ -4,7 +4,7 @@ import BlockCypher from "../src/blockcypher";
 import {
     IAddressData, IAddressFullData, IBlockData, IChainData, INewAddress, ITxData, IWalletData,
     IWalletList
-} from "../src/types";
+} from "../src/@types/blockcypher.types";
 
 const expect = require('chai').expect;
 

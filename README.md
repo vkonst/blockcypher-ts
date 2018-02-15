@@ -241,17 +241,17 @@ blockcypher.getTX(tx_hash, [params]).then(tx => {
 
 ##### 'connect' event
 
-Fired when WebSocket client was connected to WebSocket server
+Fired when WebSocket client was connected to WebSocket server <br />
 Return Websocket.connection object
 
 ##### 'connectFailed' event
 
-Fired if WebSocket client didn't connect to WebSocket server
+Fired if WebSocket client didn't connect to WebSocket server <br />
 Return error object
 
 ##### 'close' event
 
-Fired when WebSocket server disconnects
+Fired when WebSocket server disconnects <br />
 Return error code and error object
 
 ##### 'reconnection' event
@@ -260,10 +260,10 @@ This event will be fired if WebSocket server was disconnected and "shouldRetry" 
 
 ##### 'message' event
 
-Fired when WebSocket server send message to client
+Fired when WebSocket server send message to client <br />
 Return massage object
 
 ##### 'error' event
 
-Fired when any internal event handler return error
+Fired when any internal event handler return error <br />
 Return error object 

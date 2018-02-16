@@ -24,6 +24,7 @@
     "websocket"
   ],
   "author": "vadim.konstantinov@gmail.com",
+  "contributors": [ "Dmitry Tverdov (https://github.com/DTverdov)" ],
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/vkonst/blockcypher-ts/issues"

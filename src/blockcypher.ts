@@ -259,11 +259,13 @@ class Blockcypher extends WebsocketClient {
 
 export default Blockcypher;
 export {
+  IAddressBreifData,
+  IAddressData,
+  IAddressFullData,
   IBlockData,
   IChainData,
   ITxData,
-  ITxInputData,
-  ITxOutputData,
   IWalletData,
   IWalletList,
+  INewAddress
 };

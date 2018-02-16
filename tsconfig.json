@@ -6,6 +6,8 @@
     "module": "commonjs",
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
+    "declaration": true,
+    "strict": true,
     "target": "es6",
     "lib": ["es2015"],
     "sourceMap": true,
